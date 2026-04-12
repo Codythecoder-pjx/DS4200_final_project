@@ -19,6 +19,7 @@
   </ul>
 </nav>
 
+<!-- HERO -->
 <section class="hero">
   <div class="hero-inner">
     <div class="hero-tag">DS4200 · Group 57</div>
@@ -214,7 +215,7 @@
         </div>
       </div>
 
-      <!-- VIZ 5 — D3 HEATMAP via iframe -->
+      <!-- VIZ 5 — D3 Heatmap via iframe -->
       <div class="viz-block fade-up">
         <div class="viz-header">
           <div class="viz-number">5</div>
@@ -224,18 +225,21 @@
             <div class="viz-goal">Goal: Reveal how combinations of sex, chest pain type, and age group together shape heart disease risk.</div>
           </div>
         </div>
-        <div class="viz-instruction">💡 <strong>How to use:</strong> Use the Age Group dropdown to filter the heatmap. Hover over any cell to see exact disease rate and count. Click a cell to highlight it. Darker red means higher disease rate.</div>
+        <div class="viz-instruction">💡 <strong>How to use:</strong> Use the Age Group dropdown to filter the heatmap. Hover over any cell to see the exact disease rate and count. Click a cell to highlight it. Darker red means higher disease rate.</div>
         <div class="viz-iframe-area">
           <iframe
             src="heatmap.html"
-            title="D3 Heatmap — Heart Disease Rate by Sex and Chest Pain Type"
+            title="D3 Heatmap"
+            width="100%"
+            height="520px"
             scrolling="no"
+            style="border:none; border-radius:8px; box-shadow: 0 4px 20px rgba(0,0,0,0.10); display:block;"
           ></iframe>
         </div>
         <div class="viz-body">
           <div class="viz-body-block">
             <h4>Takeaway</h4>
-            <p>Heart disease risk is shaped by combinations of factors. Males with asymptomatic chest pain have a 75% disease rate vs 39% for females with the same pain type. Filtering to 60+ shows elevated rates nearly everywhere, while the under-50 group shows much lower and more uniform rates across all combinations.</p>
+            <p>Heart disease risk is shaped by combinations of factors. Males with asymptomatic chest pain have a dramatically higher disease rate compared to females with the same pain type. Filtering to 60+ shows elevated rates nearly everywhere, while the under-50 group shows much lower and more uniform rates across all combinations.</p>
           </div>
           <div class="viz-body-block">
             <h4>Design Choices</h4>
