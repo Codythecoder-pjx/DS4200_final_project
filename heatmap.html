@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Heart Disease Risk Heatmap</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 30px;
+      background: #ffffff;
+    }
+
+    h2 {
+      margin-bottom: 12px;
+    }
+
+    .controls {
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    select {
+      padding: 4px 8px;
+      font-size: 14px;
+    }
+
+    .tooltip {
+      position: absolute;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 8px;
+      font-size: 12px;
+      line-height: 1.4;
+      pointer-events: none;
+      opacity: 0;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    .axis-label {
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .cell-label {
+      font-size: 12px;
+      font-weight: bold;
+      fill: black;
+      text-anchor: middle;
+      dominant-baseline: middle;
+      pointer-events: none;
+    }
+
+    .legend-title {
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .legend-label {
+      font-size: 11px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Heart Disease Rate by Sex and Chest Pain Type</h2>
+
+  <div class="controls">
+    <label for="ageFilter">Age Group:</label>
+    <select id="ageFilter">
+      <option value="All">All</option>
+      <option value="<50">&lt;50</option>
+      <option value="50-60">50-60</option>
+      <option value="60+">60+</option>
+    </select>
+  </div>
+
+  <svg width="900" height="520"></svg>
+  <div class="tooltip"></div>
+
+<script>
+
+  const svg = d3.select("svg"),
+        margin = { top: 40, right: 140, bottom: 100, left: 120 },
+        width = +svg.attr("width") - margin.left - margin.right,
+        height = +svg.attr("height") - margin.top - margin.bottom;
+
+  const g = svg.append("g")
+    .attr("transform", `translate(${margin.left},${margin.top})`);
+
+  const tooltip = d3.select(".tooltip");
+
+  d3.csv("heatmap_data.csv", d => ({
+    sex: d.sex,
+    chest_pain_type: d.chest_pain_type,
+    age_group: d.age_group,
+    total: +d.total,
+    disease_rate: +d.disease_rate
+  })).then(data => {
+
+    const xCategories = [...new Set(data.map(d => d.chest_pain_type))];
+    const yCategories = [...new Set(data.map(d => d.sex))];
+
+    const x = d3.scaleBand()
+      .domain(xCategories)
+      .range([0, width])
+      .padding(0.06);
+
+    const y = d3.scaleBand()
+      .domain(yCategories)
+      .range([0, height])
+      .padding(0.06);
+
+    const color = d3.scaleSequential()
+      .domain([0, 1])
+      .interpolator(d3.interpolateReds);
+
+    g.append("g")
+      .attr("class", "x-axis")
+      .attr("transform", `translate(0,${height})`)
+      .call(d3.axisBottom(x))
+      .selectAll("text")
+      .attr("transform", "rotate(-25)")
+      .style("text-anchor", "end");
+
+    g.append("g")
+      .attr("class", "y-axis")
+      .call(d3.axisLeft(y));
+
+    svg.append("text")
+      .attr("class", "axis-label")
+      .attr("x", margin.left + width / 2)
+      .attr("y", height + margin.top + 80)
+      .attr("text-anchor", "middle")
+      .text("Chest Pain Type");
+
+    svg.append("text")
+      .attr("class", "axis-label")
+      .attr("transform", "rotate(-90)")
+      .attr("x", -(margin.top + height / 2))
+      .attr("y", 25)
+      .attr("text-anchor", "middle")
+      .text("Sex");
+
+    const legendX = margin.left + width + 40;
+    const legendY = margin.top + 40;
+    const legendHeight = 180;
+    const legendWidth = 16;
+
+    const defs = svg.append("defs");
+
+    const linearGradient = defs.append("linearGradient")
+      .attr("id", "heatmap-gradient")
+      .attr("x1", "0%")
+      .attr("y1", "100%")
+      .attr("x2", "0%")
+      .attr("y2", "0%");
+
+    // use multiple stops for smooth + accurate color
+    const stops = d3.range(0, 1.01, 0.1);
+
+    linearGradient.selectAll("stop")
+      .data(stops)
+      .enter()
+      .append("stop")
+      .attr("offset", d => `${d * 100}%`)
+      .attr("stop-color", d => color(d));
+
+    svg.append("text")
+      .attr("class", "legend-title")
+      .attr("x", legendX)
+      .attr("y", legendY - 12)
+      .text("Disease Rate");
+
+    svg.append("rect")
+      .attr("x", legendX)
+      .attr("y", legendY)
+      .attr("width", legendWidth)
+      .attr("height", legendHeight)
+      .style("fill", "url(#heatmap-gradient)")
+      .style("stroke", "#ccc");
+
+    const legendScale = d3.scaleLinear()
+      .domain([0, 1])
+      .range([legendHeight, 0]);
+
+    const legendAxis = d3.axisRight(legendScale)
+      .tickValues([0, 0.25, 0.5, 0.75, 1])
+      .tickFormat(d3.format(".0%"));
+
+    svg.append("g")
+      .attr("transform", `translate(${legendX + legendWidth},${legendY})`)
+      .attr("class", "legend-label")
+      .call(legendAxis);
+
+    function updateChart(selectedAge) {
+      let filtered;
+
+      if (selectedAge === "All") {
+        // aggregate across age groups so each cell has one value
+        filtered = Array.from(
+          d3.rollup(
+            data,
+            v => {
+              const total = d3.sum(v, d => d.total);
+              const weightedRate = d3.sum(v, d => d.disease_rate * d.total) / total;
+              return {
+                sex: v[0].sex,
+                chest_pain_type: v[0].chest_pain_type,
+                total: total,
+                disease_rate: weightedRate
+              };
+            },
+            d => d.sex,
+            d => d.chest_pain_type
+          ),
+          ([sex, innerMap]) =>
+            Array.from(innerMap, ([chest_pain_type, values]) => ({
+              sex,
+              chest_pain_type,
+              total: values.total,
+              disease_rate: values.disease_rate
+            }))
+        ).flat();
+      } else {
+        filtered = data.filter(d => d.age_group === selectedAge);
+      }
+
+      const cells = g.selectAll("rect.heat-cell")
+        .data(filtered, d => d.sex + "-" + d.chest_pain_type);
+
+      cells.join(
+        enter => enter.append("rect")
+          .attr("class", "heat-cell")
+          .attr("x", d => x(d.chest_pain_type))
+          .attr("y", d => y(d.sex))
+          .attr("width", x.bandwidth())
+          .attr("height", y.bandwidth())
+          .attr("fill", d => color(d.disease_rate))
+          .attr("stroke", "white")
+          .attr("stroke-width", 1)
+          .on("mouseover", function(event, d) {
+            tooltip.style("opacity", 1)
+              .html(`
+                <strong>Sex:</strong> ${d.sex}<br>
+                <strong>Chest Pain Type:</strong> ${d.chest_pain_type}<br>
+                <strong>Disease Rate:</strong> ${(d.disease_rate * 100).toFixed(1)}%<br>
+                <strong>Count:</strong> ${d.total}
+              `);
+          })
+          .on("mousemove", function(event) {
+            tooltip
+              .style("left", (event.pageX + 12) + "px")
+              .style("top", (event.pageY - 20) + "px");
+          })
+          .on("mouseout", function() {
+            tooltip.style("opacity", 0);
+          })
+          .on("click", function() {
+            g.selectAll("rect.heat-cell")
+              .attr("stroke", "white")
+              .attr("stroke-width", 1);
+
+            d3.select(this)
+              .attr("stroke", "black")
+              .attr("stroke-width", 3);
+          }),
+        update => update
+          .attr("x", d => x(d.chest_pain_type))
+          .attr("y", d => y(d.sex))
+          .attr("fill", d => color(d.disease_rate)),
+        exit => exit.remove()
+      );
+
+      g.selectAll("text.cell-label").remove();
+
+      g.selectAll("text.cell-label")
+        .data(filtered, d => d.sex + "-" + d.chest_pain_type)
+        .enter()
+        .append("text")
+        .attr("class", "cell-label")
+        .attr("x", d => x(d.chest_pain_type) + x.bandwidth() / 2)
+        .attr("y", d => y(d.sex) + y.bandwidth() / 2)
+        .attr("dy", "0.35em")
+        .text(d => `${(d.disease_rate * 100).toFixed(0)}%`);
+    }
+
+    updateChart("All");
+
+    d3.select("#ageFilter").on("change", function() {
+      updateChart(this.value);
+    });
+  });
+</script>
+</body>
+</html>
