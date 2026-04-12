@@ -104,7 +104,7 @@
             <div class="viz-goal">Goal: Show how heart disease prevalence varies with age across the population.</div>
           </div>
         </div>
-        <div class="viz-instruction">💡 <strong>How to use:</strong> Hover over any bar to see the disease status and count for that age bin.</div>
+        <div class="viz-instruction">💡 <strong>How to use:</strong> Hover over any bar to see the disease status and count for that age bin. Scroll to zoom into a specific age range.</div>
         <div class="viz-chart-area">
           <img src="chart1.jpg" alt="Age Distribution by Heart Disease Status"/>
         </div>
@@ -214,19 +214,23 @@
         </div>
       </div>
 
-      <!-- VIZ 5 -->
+      <!-- VIZ 5 — D3 HEATMAP via iframe -->
       <div class="viz-block fade-up">
         <div class="viz-header">
           <div class="viz-number">5</div>
           <div class="viz-meta">
-            <div class="viz-type">D3.js · Heatmap</div>
+            <div class="viz-type">D3.js · Interactive Heatmap</div>
             <div class="viz-title">Heart Disease Rate by Sex and Chest Pain Type</div>
             <div class="viz-goal">Goal: Reveal how combinations of sex, chest pain type, and age group together shape heart disease risk.</div>
           </div>
         </div>
-        <div class="viz-instruction">💡 <strong>How to use:</strong> Use the Age Group dropdown to filter the heatmap. Hover over any cell to see the exact disease rate and count. Darker red means higher disease rate.</div>
-        <div class="viz-chart-area">
-          <img src="chart5.jpg" alt="Heart Disease Rate Heatmap by Sex and Chest Pain Type"/>
+        <div class="viz-instruction">💡 <strong>How to use:</strong> Use the Age Group dropdown to filter the heatmap. Hover over any cell to see exact disease rate and count. Click a cell to highlight it. Darker red means higher disease rate.</div>
+        <div class="viz-iframe-area">
+          <iframe
+            src="heatmap.html"
+            title="D3 Heatmap — Heart Disease Rate by Sex and Chest Pain Type"
+            scrolling="no"
+          ></iframe>
         </div>
         <div class="viz-body">
           <div class="viz-body-block">
