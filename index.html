@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Heart Disease Risk Factors | DS4200 Group 57</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
   <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
@@ -215,7 +216,7 @@
         </div>
       </div>
 
-      <!-- VIZ 5 — D3 Heatmap via iframe -->
+      <!-- VIZ 5 — D3 Heatmap embedded directly -->
       <div class="viz-block fade-up">
         <div class="viz-header">
           <div class="viz-number">5</div>
@@ -226,16 +227,21 @@
           </div>
         </div>
         <div class="viz-instruction">💡 <strong>How to use:</strong> Use the Age Group dropdown to filter the heatmap. Hover over any cell to see the exact disease rate and count. Click a cell to highlight it. Darker red means higher disease rate.</div>
-        <div class="viz-iframe-area">
-          <iframe
-            src="heatmap.html"
-            title="D3 Heatmap"
-            width="100%"
-            height="520px"
-            scrolling="no"
-            style="border:none; border-radius:8px; box-shadow: 0 4px 20px rgba(0,0,0,0.10); display:block;"
-          ></iframe>
+
+        <!-- D3 Heatmap lives directly here -->
+        <div class="viz-chart-area" style="flex-direction: column; align-items: center; gap: 12px;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <label for="ageFilter" style="font-weight:600; font-size:0.9rem;">Age Group:</label>
+            <select id="ageFilter" style="padding:5px 10px; font-size:0.9rem; border-radius:6px; border:1px solid #ddd; background:white; cursor:pointer;">
+              <option value="All">All</option>
+              <option value="<50">&lt;50</option>
+              <option value="50-60">50–60</option>
+              <option value="60+">60+</option>
+            </select>
+          </div>
+          <svg id="heatmap-svg" viewBox="0 0 760 420" preserveAspectRatio="xMidYMid meet" style="width:100%; max-width:780px; height:auto; display:block;"></svg>
         </div>
+
         <div class="viz-body">
           <div class="viz-body-block">
             <h4>Takeaway</h4>
@@ -308,12 +314,233 @@
   <p style="margin-top:8px;">Dataset: Kaggle Heart Disease Dataset · Built with Altair & D3.js</p>
 </footer>
 
+<!-- tooltip div lives at body level so it can float freely -->
+<div id="heatmap-tooltip" style="
+  position: fixed;
+  background: rgba(0,0,0,0.82);
+  color: white;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 13px;
+  line-height: 1.6;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 9999;
+  font-family: 'DM Sans', sans-serif;
+"></div>
+
 <script>
+  // ── Fade-up animation ──
   const fadeEls = document.querySelectorAll('.fade-up');
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.1 });
   fadeEls.forEach(el => observer.observe(el));
+
+  // ── D3 Heatmap ──
+  const svg    = d3.select("#heatmap-svg");
+  const margin = { top: 30, right: 130, bottom: 90, left: 110 };
+  const width  = 760 - margin.left - margin.right;
+  const height = 420 - margin.top  - margin.bottom;
+
+  const g = svg.append("g")
+    .attr("transform", `translate(${margin.left},${margin.top})`);
+
+  const tooltip = document.getElementById("heatmap-tooltip");
+
+  d3.csv("heatmap_data.csv", d => ({
+    sex:             d.sex,
+    chest_pain_type: d.chest_pain_type,
+    age_group:       d.age_group,
+    total:           +d.total,
+    disease_rate:    +d.disease_rate
+  })).then(data => {
+
+    const xCategories = [...new Set(data.map(d => d.chest_pain_type))];
+    const yCategories = [...new Set(data.map(d => d.sex))];
+
+    const x = d3.scaleBand().domain(xCategories).range([0, width]).padding(0.06);
+    const y = d3.scaleBand().domain(yCategories).range([0, height]).padding(0.06);
+    const color = d3.scaleSequential().domain([0, 1]).interpolator(d3.interpolateReds);
+
+    // X axis
+    g.append("g")
+      .attr("transform", `translate(0,${height})`)
+      .call(d3.axisBottom(x))
+      .selectAll("text")
+      .attr("transform", "rotate(-20)")
+      .style("text-anchor", "end")
+      .style("font-size", "11px");
+
+    // Y axis
+    g.append("g")
+      .call(d3.axisLeft(y))
+      .selectAll("text")
+      .style("font-size", "11px");
+
+    // X axis label
+    svg.append("text")
+      .attr("x", margin.left + width / 2)
+      .attr("y", height + margin.top + 78)
+      .attr("text-anchor", "middle")
+      .style("font-size", "12px")
+      .style("font-weight", "bold")
+      .text("Chest Pain Type");
+
+    // Y axis label
+    svg.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("x", -(margin.top + height / 2))
+      .attr("y", 18)
+      .attr("text-anchor", "middle")
+      .style("font-size", "12px")
+      .style("font-weight", "bold")
+      .text("Sex");
+
+    // Legend
+    const legendX = margin.left + width + 30;
+    const legendY = margin.top + 20;
+    const legendH = 160;
+    const legendW = 14;
+
+    const defs = svg.append("defs");
+    const grad = defs.append("linearGradient")
+      .attr("id", "heatmap-gradient")
+      .attr("x1", "0%").attr("y1", "100%")
+      .attr("x2", "0%").attr("y2", "0%");
+
+    d3.range(0, 1.01, 0.1).forEach(d => {
+      grad.append("stop")
+        .attr("offset", `${d * 100}%`)
+        .attr("stop-color", color(d));
+    });
+
+    svg.append("text")
+      .attr("x", legendX)
+      .attr("y", legendY - 10)
+      .style("font-size", "12px")
+      .style("font-weight", "bold")
+      .text("Disease Rate");
+
+    svg.append("rect")
+      .attr("x", legendX).attr("y", legendY)
+      .attr("width", legendW).attr("height", legendH)
+      .style("fill", "url(#heatmap-gradient)")
+      .style("stroke", "#ccc");
+
+    const legendScale = d3.scaleLinear().domain([0, 1]).range([legendH, 0]);
+    svg.append("g")
+      .attr("transform", `translate(${legendX + legendW},${legendY})`)
+      .style("font-size", "11px")
+      .call(
+        d3.axisRight(legendScale)
+          .tickValues([0, 0.25, 0.5, 0.75, 1])
+          .tickFormat(d3.format(".0%"))
+      );
+
+    // Update function
+    function updateChart(selectedAge) {
+      let filtered;
+
+      if (selectedAge === "All") {
+        filtered = Array.from(
+          d3.rollup(
+            data,
+            v => {
+              const total = d3.sum(v, d => d.total);
+              const rate  = d3.sum(v, d => d.disease_rate * d.total) / total;
+              return {
+                sex:             v[0].sex,
+                chest_pain_type: v[0].chest_pain_type,
+                total:           total,
+                disease_rate:    rate
+              };
+            },
+            d => d.sex,
+            d => d.chest_pain_type
+          ),
+          ([, inner]) => Array.from(inner, ([, vals]) => vals)
+        ).flat();
+      } else {
+        filtered = data.filter(d => d.age_group === selectedAge);
+      }
+
+      // Draw cells
+      g.selectAll("rect.heat-cell")
+        .data(filtered, d => d.sex + "-" + d.chest_pain_type)
+        .join(
+          enter => enter.append("rect")
+            .attr("class", "heat-cell")
+            .attr("x",      d => x(d.chest_pain_type))
+            .attr("y",      d => y(d.sex))
+            .attr("width",  x.bandwidth())
+            .attr("height", y.bandwidth())
+            .attr("rx", 4)
+            .attr("fill",         d => color(d.disease_rate))
+            .attr("stroke",       "white")
+            .attr("stroke-width", 2)
+            .style("cursor", "pointer")
+            .on("mouseover", function(event, d) {
+              tooltip.style.opacity = 1;
+              tooltip.innerHTML =
+                `<strong>Sex:</strong> ${d.sex}<br/>
+                 <strong>Chest Pain:</strong> ${d.chest_pain_type}<br/>
+                 <strong>Disease Rate:</strong> ${(d.disease_rate * 100).toFixed(1)}%<br/>
+                 <strong>Count:</strong> ${d.total}`;
+            })
+            .on("mousemove", function(event) {
+              tooltip.style.left = (event.clientX + 14) + "px";
+              tooltip.style.top  = (event.clientY - 30) + "px";
+            })
+            .on("mouseout", function() {
+              tooltip.style.opacity = 0;
+            })
+            .on("click", function() {
+              g.selectAll("rect.heat-cell")
+                .attr("stroke",       "white")
+                .attr("stroke-width", 2);
+              d3.select(this)
+                .attr("stroke",       "#333")
+                .attr("stroke-width", 3);
+            }),
+          update => update
+            .attr("x",    d => x(d.chest_pain_type))
+            .attr("y",    d => y(d.sex))
+            .attr("fill", d => color(d.disease_rate)),
+          exit => exit.remove()
+        );
+
+      // Cell labels
+      g.selectAll("text.cell-label").remove();
+      g.selectAll("text.cell-label")
+        .data(filtered, d => d.sex + "-" + d.chest_pain_type)
+        .enter()
+        .append("text")
+        .attr("class", "cell-label")
+        .attr("x",  d => x(d.chest_pain_type) + x.bandwidth() / 2)
+        .attr("y",  d => y(d.sex) + y.bandwidth() / 2)
+        .attr("dy", "0.35em")
+        .attr("text-anchor", "middle")
+        .style("fill",        d => d.disease_rate > 0.45 ? "#fff" : "#333")
+        .style("font-size",   "13px")
+        .style("font-weight", "700")
+        .style("pointer-events", "none")
+        .text(d => `${(d.disease_rate * 100).toFixed(0)}%`);
+    }
+
+    updateChart("All");
+
+    d3.select("#ageFilter").on("change", function() {
+      updateChart(this.value);
+    });
+
+  }).catch(err => {
+    document.getElementById("heatmap-svg").insertAdjacentHTML("afterend",
+      `<p style="color:red; padding:20px;">
+        Could not load heatmap_data.csv — make sure it is uploaded to your repo. Error: ${err.message}
+      </p>`
+    );
+  });
 </script>
 
 </body>
