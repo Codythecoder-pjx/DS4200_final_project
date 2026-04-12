@@ -41,4 +41,272 @@
     <div class="section-label">Overview</div>
     <div class="section-title">Why Heart Disease?</div>
     <div class="section-body">
-      <p>H
+      <p>Heart disease is one of the leading causes of death worldwide, making it a critical public health concern. Understanding the factors associated with it can help reduce preventable deaths and improve overall health outcomes. Identifying key risk factors supports earlier detection, more effective prevention, and better-informed healthcare decisions.</p>
+      <p>In this project, we explore how different demographic and health-related variables — including age, biological characteristics, and lifestyle indicators such as cholesterol levels and blood pressure — relate to the likelihood of developing heart disease. Through interactive data visualization, we transform complex medical data into intuitive insights that are easier to interpret and communicate.</p>
+      <p>Studying heart disease connects data analysis with real-world impact. Patterns in the data can reveal disparities across different groups and highlight potential areas for intervention.</p>
+    </div>
+    <div class="refs" style="margin-top:40px;">
+      <div class="section-label">References</div>
+      <div class="ref-item">
+        <strong>1.</strong> Torpy JM, Burke AE, Glass RM. <em>Coronary heart disease risk factors.</em> JAMA. 2009;302(21):2388.
+        <br/><a href="https://doi.org/10.1001/jama.302.21.2388" target="_blank">https://doi.org/10.1001/jama.302.21.2388</a>
+      </div>
+      <div class="ref-item">
+        <strong>2.</strong> Arts J, Fernandez ML, Lofgren IE. <em>Coronary heart disease risk factors in college students.</em> Advances in Nutrition. 2014;5(2):177–187.
+        <br/><a href="https://www.sciencedirect.com/science/article/pii/S2161831322011875" target="_blank">https://doi.org/10.3945/an.113.005447</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule"/>
+
+<!-- DATA -->
+<section class="section" id="data" style="background: var(--white);">
+  <div class="section-inner fade-up">
+    <div class="section-label">Dataset</div>
+    <div class="section-title">About the Data</div>
+    <div class="section-body">
+      <p>Our analysis uses a publicly available heart disease dataset from <strong>Kaggle</strong> containing approximately <strong>270,000 observations</strong> and <strong>14 features</strong>. We apply <strong>stratified sampling by disease status</strong> (n=8,000) to preserve the original class distribution while ensuring efficiency in visualization.</p>
+    </div>
+    <div class="data-grid">
+      <div class="data-card"><div class="data-card-name">Age</div><div class="data-card-desc">Age of the individual</div></div>
+      <div class="data-card"><div class="data-card-name">Sex</div><div class="data-card-desc">Gender of the individual</div></div>
+      <div class="data-card"><div class="data-card-name">Chest_Pain_Type</div><div class="data-card-desc">Type of chest pain experienced</div></div>
+      <div class="data-card"><div class="data-card-name">Resting_BP</div><div class="data-card-desc">Resting blood pressure</div></div>
+      <div class="data-card"><div class="data-card-name">Cholesterol</div><div class="data-card-desc">Serum cholesterol level</div></div>
+      <div class="data-card"><div class="data-card-name">Fasting_Blood_Sugar</div><div class="data-card-desc">Whether fasting blood sugar exceeds threshold</div></div>
+      <div class="data-card"><div class="data-card-name">Rest_ECG</div><div class="data-card-desc">Resting ECG results</div></div>
+      <div class="data-card"><div class="data-card-name">Max_Heart_Rate</div><div class="data-card-desc">Maximum heart rate achieved</div></div>
+      <div class="data-card"><div class="data-card-name">Exercise_Induced_Angina</div><div class="data-card-desc">Presence of exercise-induced angina</div></div>
+      <div class="data-card"><div class="data-card-name">ST_Depression</div><div class="data-card-desc">ST depression induced by exercise</div></div>
+      <div class="data-card target-card"><div class="data-card-name">Heart_Disease</div><div class="data-card-desc">🎯 Target variable — presence of heart disease</div></div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule"/>
+
+<!-- VISUALIZATIONS -->
+<section class="section" id="viz">
+  <div class="section-inner">
+    <div class="section-label fade-up">Visualizations</div>
+    <div class="section-title fade-up">Five Ways to See the Data</div>
+    <div class="viz-grid">
+
+      <!-- VIZ 1 -->
+      <div class="viz-block fade-up">
+        <div class="viz-header">
+          <div class="viz-number">1</div>
+          <div class="viz-meta">
+            <div class="viz-type">Altair · Histogram</div>
+            <div class="viz-title">Age Distribution by Heart Disease Status</div>
+            <div class="viz-goal">Goal: Show how heart disease prevalence varies with age across the population.</div>
+          </div>
+        </div>
+        <div class="viz-instruction">💡 <strong>How to use:</strong> Hover over any bar to see the disease status and count for that age bin.</div>
+        <div class="viz-chart-area">
+          <img src="chart1.jpg" alt="Age Distribution by Heart Disease Status"/>
+        </div>
+        <div class="viz-body">
+          <div class="viz-body-block">
+            <h4>Takeaway</h4>
+            <p>Heart disease cases become increasingly concentrated in older age bins, particularly from the mid-50s onward. While younger individuals do appear in the disease group, the proportion rises noticeably with age. The overlap across all ages shows that age alone is not sufficient to predict heart disease.</p>
+          </div>
+          <div class="viz-body-block">
+            <h4>Design Choices</h4>
+            <p>Age is mapped to the x-axis and count to the y-axis. Transparent overlapping bars let both groups be compared simultaneously. 25 bins balance granularity and readability. Color consistently encodes disease status across all charts.</p>
+            <div style="margin-top:10px;">
+              <span class="interaction-tag">🖱 Hover — count & disease status</span>
+              <span class="interaction-tag">🔍 Scroll to zoom</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIZ 2 -->
+      <div class="viz-block fade-up">
+        <div class="viz-header">
+          <div class="viz-number">2</div>
+          <div class="viz-meta">
+            <div class="viz-type">Altair · Bar Chart</div>
+            <div class="viz-title">Heart Disease Rate by Chest Pain Type</div>
+            <div class="viz-goal">Goal: Compare heart disease risk across chest pain categories, filterable by sex.</div>
+          </div>
+        </div>
+        <div class="viz-instruction">💡 <strong>How to use:</strong> Use the sex dropdown to filter results. Hover over bars to see the exact disease rate and total count for each chest pain type.</div>
+        <div class="viz-chart-area">
+          <img src="chart2.jpg" alt="Heart Disease Rate by Chest Pain Type"/>
+        </div>
+        <div class="viz-body">
+          <div class="viz-body-block">
+            <h4>Takeaway</h4>
+            <p>Asymptomatic chest pain has a strikingly higher heart disease rate — a counterintuitive but clinically significant finding. When filtering by sex, males show much higher rates across all pain types. Female patterns differ, suggesting the symptom-disease relationship varies by sex.</p>
+          </div>
+          <div class="viz-body-block">
+            <h4>Design Choices</h4>
+            <p>Disease rate rather than raw count is used on the y-axis for fair comparison across groups of different sizes. Bars are sorted highest to lowest. Color encodes chest pain type for quick visual differentiation.</p>
+            <div style="margin-top:10px;">
+              <span class="interaction-tag">📋 Dropdown — All / Male / Female</span>
+              <span class="interaction-tag">🖱 Hover — rate & count</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIZ 3 -->
+      <div class="viz-block fade-up">
+        <div class="viz-header">
+          <div class="viz-number">3</div>
+          <div class="viz-meta">
+            <div class="viz-type">Altair · Scatter Plot</div>
+            <div class="viz-title">Max Heart Rate vs ST Depression by Disease Status</div>
+            <div class="viz-goal">Goal: Explore the joint relationship between two clinical measurements and disease status.</div>
+          </div>
+        </div>
+        <div class="viz-instruction">💡 <strong>How to use:</strong> Hover over any point to see detailed patient info. Click and drag on the plot to brush-select a region — selected points stay colored while others fade to gray.</div>
+        <div class="viz-chart-area">
+          <img src="chart3.jpg" alt="Max Heart Rate vs ST Depression"/>
+        </div>
+        <div class="viz-body">
+          <div class="viz-body-block">
+            <h4>Takeaway</h4>
+            <p>Disease cases cluster at higher ST depression values and lower maximum heart rates. Separate regression lines confirm the relationship between these variables differs by disease status — the disease group shows higher ST depression across the range of heart rates.</p>
+          </div>
+          <div class="viz-body-block">
+            <h4>Design Choices</h4>
+            <p>Partial transparency prevents overplotting on dense regions. Regression lines summarize each group's trend without hiding individual points. Brush selection enables focused exploration of specific clusters.</p>
+            <div style="margin-top:10px;">
+              <span class="interaction-tag">🖱 Hover — age, sex, max HR, ST depression</span>
+              <span class="interaction-tag">✏️ Drag to brush-select region</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIZ 4 -->
+      <div class="viz-block fade-up">
+        <div class="viz-header">
+          <div class="viz-number">4</div>
+          <div class="viz-meta">
+            <div class="viz-type">Altair · Box Plot</div>
+            <div class="viz-title">Distribution of Clinical Variables by Disease Status</div>
+            <div class="viz-goal">Goal: Compare the spread and median of clinical variables across disease groups.</div>
+          </div>
+        </div>
+        <div class="viz-instruction">💡 <strong>How to use:</strong> Use the dropdown to switch between Cholesterol, Max Heart Rate, and ST Depression. Hover over each box to see the median and quartile values.</div>
+        <div class="viz-chart-area">
+          <img src="chart4.jpg" alt="Distribution of Clinical Variables"/>
+        </div>
+        <div class="viz-body">
+          <div class="viz-body-block">
+            <h4>Takeaway</h4>
+            <p>ST depression shows the clearest separation between groups with minimal overlap, making it a strong individual predictor. The disease group also tends to have lower maximum heart rates. Cholesterol distributions overlap heavily, suggesting it is a weaker standalone predictor.</p>
+          </div>
+          <div class="viz-body-block">
+            <h4>Design Choices</h4>
+            <p>A dropdown replaces three separate charts, keeping the layout clean while enabling direct comparison. Box size is standardized so visual weight stays consistent. Color matches the rest of the project for disease status.</p>
+            <div style="margin-top:10px;">
+              <span class="interaction-tag">📋 Dropdown — Cholesterol / Max HR / ST Depression</span>
+              <span class="interaction-tag">🖱 Hover — median & quartile values</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIZ 5 -->
+      <div class="viz-block fade-up">
+        <div class="viz-header">
+          <div class="viz-number">5</div>
+          <div class="viz-meta">
+            <div class="viz-type">D3.js · Heatmap</div>
+            <div class="viz-title">Heart Disease Rate by Sex and Chest Pain Type</div>
+            <div class="viz-goal">Goal: Reveal how combinations of sex, chest pain type, and age group together shape heart disease risk.</div>
+          </div>
+        </div>
+        <div class="viz-instruction">💡 <strong>How to use:</strong> Use the Age Group dropdown to filter the heatmap. Hover over any cell to see the exact disease rate and count. Darker red means higher disease rate.</div>
+        <div class="viz-chart-area">
+          <img src="chart5.jpg" alt="Heart Disease Rate Heatmap by Sex and Chest Pain Type"/>
+        </div>
+        <div class="viz-body">
+          <div class="viz-body-block">
+            <h4>Takeaway</h4>
+            <p>Heart disease risk is shaped by combinations of factors. Males with asymptomatic chest pain have a 75% disease rate vs 39% for females with the same pain type. Filtering to 60+ shows elevated rates nearly everywhere, while the under-50 group shows much lower and more uniform rates across all combinations.</p>
+          </div>
+          <div class="viz-body-block">
+            <h4>Design Choices</h4>
+            <p>A red sequential color scale encodes disease rate intuitively — darker means more dangerous. Percentage labels inside cells make values immediately readable without hovering. The age group dropdown lets users explore how risk patterns shift across life stages.</p>
+            <div style="margin-top:10px;">
+              <span class="interaction-tag">📋 Dropdown — All / &lt;50 / 50–60 / 60+</span>
+              <span class="interaction-tag">🖱 Hover tooltip — sex, pain type, rate, count</span>
+              <span class="interaction-tag">🔲 Click to highlight cell</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="rule"/>
+
+<!-- FINDINGS -->
+<section class="section" id="findings" style="background: var(--white);">
+  <div class="section-inner fade-up">
+    <div class="section-label">Conclusion</div>
+    <div class="section-title">What We Learned</div>
+    <div class="section-body">
+      <p>Across all five visualizations, consistent patterns emerge. Heart disease risk is not driven by any single variable but by combinations of demographic and clinical factors. The most meaningful associations involve asymptomatic chest pain, elevated ST depression, lower maximum heart rates, male sex, and older age — especially when these occur together.</p>
+    </div>
+    <div class="findings-grid">
+      <div class="finding-card">
+        <div class="finding-icon">📈</div>
+        <h3>Age Increases Risk</h3>
+        <p>Disease cases concentrate heavily in individuals in their 50s and 60s. Younger groups show substantially lower and more uniform rates.</p>
+      </div>
+      <div class="finding-card">
+        <div class="finding-icon">⚠️</div>
+        <h3>Asymptomatic Pain is Dangerous</h3>
+        <p>Patients with asymptomatic chest pain had the highest disease rates — a counterintuitive finding that highlights a major screening challenge.</p>
+      </div>
+      <div class="finding-card">
+        <div class="finding-icon">⚤</div>
+        <h3>Sex Modifies Risk</h3>
+        <p>Males show dramatically higher rates across most chest pain types. The sex and pain type combination is more predictive than either variable alone.</p>
+      </div>
+      <div class="finding-card">
+        <div class="finding-icon">💓</div>
+        <h3>ST Depression is Key</h3>
+        <p>ST depression shows the clearest group separation with minimal distributional overlap — stronger than cholesterol or max heart rate alone.</p>
+      </div>
+      <div class="finding-card">
+        <div class="finding-icon">🔬</div>
+        <h3>Cholesterol is Weaker Alone</h3>
+        <p>Cholesterol distributions overlap heavily between groups, suggesting it operates more meaningfully in combination with other risk factors.</p>
+      </div>
+      <div class="finding-card">
+        <div class="finding-icon">🔮</div>
+        <h3>Future Work</h3>
+        <p>Future directions include predictive modeling, interaction effect analysis, and exploration of underrepresented subgroups in the data.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p><strong>DS4200 — Information Presentation & Visualization</strong></p>
+  <p style="margin-top:8px;">Group 57 · Yi Ham Lin · Junxiang Peng · HaoTong Liu · Northeastern University</p>
+  <p style="margin-top:8px;">Dataset: Kaggle Heart Disease Dataset · Built with Altair & D3.js</p>
+</footer>
+
+<script>
+  const fadeEls = document.querySelectorAll('.fade-up');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  fadeEls.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
