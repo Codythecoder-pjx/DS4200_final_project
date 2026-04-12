@@ -80,6 +80,7 @@ hr.rule { border: none; border-top: 1px solid var(--rule); margin: 0; }
   color: #5a4000;
 }
 
+/* static image charts */
 .viz-chart-area {
   padding: 32px;
   background: #f9f7f5;
@@ -87,7 +88,6 @@ hr.rule { border: none; border-top: 1px solid var(--rule); margin: 0; }
   align-items: center;
   justify-content: center;
 }
-
 .viz-chart-area img {
   width: 100%;
   max-width: 750px;
@@ -96,6 +96,23 @@ hr.rule { border: none; border-top: 1px solid var(--rule); margin: 0; }
   box-shadow: 0 4px 20px rgba(0,0,0,0.12);
   display: block;
   margin: 0 auto;
+}
+
+/* iframe for D3 heatmap */
+.viz-iframe-area {
+  background: #f9f7f5;
+  padding: 24px 32px;
+  display: flex;
+  justify-content: center;
+}
+.viz-iframe-area iframe {
+  width: 100%;
+  max-width: 780px;
+  height: 380px;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.10);
+  background: #f9f7f5;
 }
 
 .viz-body { padding: 28px 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
@@ -138,4 +155,5 @@ footer p + p { margin-top: 6px; }
   .hero { padding: 60px 5vw 50px; }
   .viz-header { flex-direction: column; }
   .viz-body { grid-template-columns: 1fr; }
+  .viz-iframe-area iframe { height: 440px; }
 }
