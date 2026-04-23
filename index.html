@@ -215,7 +215,41 @@
           </div>
         </div>
       </div>
-
+       <div class="viz-block fade-up">
+        <div class="viz-header">
+          <div class="viz-number">5</div>
+          <div class="viz-meta">
+            <div class="viz-type">Altair · Box Plot</div>
+            <div class="viz-title">Distribution of Clinical Variables by Disease Status</div>
+            <div class="viz-goal">Goal: Compare the spread and median of clinical variables across disease groups.</div>
+          </div>
+        </div>
+        <div class="viz-instruction">
+          💡 <strong>How to use:</strong> Use the Variable dropdown at the top of the chart to switch between Cholesterol, Max Heart Rate, and ST Depression. Hover over each box to see the median and quartile values for each group.
+        </div>
+        <div class="viz-iframe-area">
+            <iframe
+              src="boxplot_improved.html"
+              title="Distribution of Clinical Variables Box Plot"
+              scrolling="no"
+              style="border:none; width:100%; height:600px; display:block; border-radius:8px;">
+            </iframe>
+        </div>
+        <div class="viz-body">
+          <div class="viz-body-block">
+            <h4>Takeaway</h4>
+            <p>ST depression shows the clearest separation between groups with minimal overlap, making it a strong individual predictor. The disease group also tends to have lower maximum heart rates. Cholesterol distributions overlap heavily, suggesting it is a weaker standalone predictor.</p>
+          </div>
+          <div class="viz-body-block">
+            <h4>Design Choices</h4>
+            <p>A dropdown replaces three separate charts, keeping the layout clean while enabling direct comparison. Box size is standardized so visual weight stays consistent. Color matches the rest of the project for disease status.</p>
+            <div style="margin-top:10px;">
+              <span class="interaction-tag">📋 Dropdown — Cholesterol / Max HR / ST Depression</span>
+              <span class="interaction-tag">🖱 Hover — median &amp; quartile values</span>
+            </div>
+          </div>
+        </div>
+      </div>
       <!-- VIZ 4: scatter_with_trend.html (was 3) -->
       <div class="viz-block fade-up">
         <div class="viz-header">
@@ -253,42 +287,7 @@
         </div>
       </div>
 
-      <!-- VIZ 5: box.html (was 4) -->
-      <div class="viz-block fade-up">
-        <div class="viz-header">
-          <div class="viz-number">5</div>
-          <div class="viz-meta">
-            <div class="viz-type">Altair · Box Plot</div>
-            <div class="viz-title">Distribution of Clinical Variables by Disease Status</div>
-            <div class="viz-goal">Goal: Compare the spread and median of clinical variables across disease groups.</div>
-          </div>
-        </div>
-        <div class="viz-instruction">
-          💡 <strong>How to use:</strong> Use the Variable dropdown at the top of the chart to switch between Cholesterol, Max Heart Rate, and ST Depression. Hover over each box to see the median and quartile values for each group.
-        </div>
-        <div class="viz-iframe-area">
-            <iframe
-              src="boxplot_improved.html"
-              title="Distribution of Clinical Variables Box Plot"
-              scrolling="no"
-              style="border:none; width:100%; height:600px; display:block; border-radius:8px;">
-            </iframe>
-        </div>
-        <div class="viz-body">
-          <div class="viz-body-block">
-            <h4>Takeaway</h4>
-            <p>ST depression shows the clearest separation between groups with minimal overlap, making it a strong individual predictor. The disease group also tends to have lower maximum heart rates. Cholesterol distributions overlap heavily, suggesting it is a weaker standalone predictor.</p>
-          </div>
-          <div class="viz-body-block">
-            <h4>Design Choices</h4>
-            <p>A dropdown replaces three separate charts, keeping the layout clean while enabling direct comparison. Box size is standardized so visual weight stays consistent. Color matches the rest of the project for disease status.</p>
-            <div style="margin-top:10px;">
-              <span class="interaction-tag">📋 Dropdown — Cholesterol / Max HR / ST Depression</span>
-              <span class="interaction-tag">🖱 Hover — median &amp; quartile values</span>
-            </div>
-          </div>
-        </div>
-      </div>
+     
 
     </div>
   </div>
