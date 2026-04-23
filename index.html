@@ -126,128 +126,17 @@
             <h4>Design Choices</h4>
             <p>Age is mapped to the x-axis and count to the y-axis. Transparent overlapping bars let both groups be compared simultaneously. 25 bins balance granularity and readability. Color consistently encodes disease status across all charts.</p>
             <div style="margin-top:10px;">
-              <span class="interaction-tag">🖱 Hover — count & disease status</span>
+              <span class="interaction-tag">🖱 Hover — count &amp; disease status</span>
               <span class="interaction-tag">🔍 Scroll to zoom</span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- VIZ 2: bar.html -->
+      <!-- VIZ 2: D3 Heatmap (moved from position 5) -->
       <div class="viz-block fade-up">
         <div class="viz-header">
           <div class="viz-number">2</div>
-          <div class="viz-meta">
-            <div class="viz-type">Altair · Bar Chart</div>
-            <div class="viz-title">Heart Disease Rate by Chest Pain Type</div>
-            <div class="viz-goal">Goal: Compare heart disease risk across chest pain categories, filterable by sex.</div>
-          </div>
-        </div>
-        <div class="viz-instruction">
-          💡 <strong>How to use:</strong> Use the Sex dropdown at the top of the chart to filter by All, male, or female. Hover over bars to see the exact disease rate and total count.
-        </div>
-        <div class="viz-iframe-area">
-          <iframe
-            src="bar.html"
-            title="Heart Disease Rate by Chest Pain Type"
-            scrolling="no"
-            style="border:none; width:100%; height:450px; display:block; border-radius:8px;">
-          </iframe>
-        </div>
-        <div class="viz-body">
-          <div class="viz-body-block">
-            <h4>Takeaway</h4>
-            <p>Asymptomatic chest pain has a strikingly higher heart disease rate — a counterintuitive but clinically significant finding. When filtering by sex, males show much higher rates across all pain types. Female patterns differ, suggesting the symptom-disease relationship varies by sex.</p>
-          </div>
-          <div class="viz-body-block">
-            <h4>Design Choices</h4>
-            <p>Disease rate rather than raw count is used on the y-axis for fair comparison across groups of different sizes. Bars are sorted highest to lowest. Color encodes chest pain type for quick visual differentiation.</p>
-            <div style="margin-top:10px;">
-              <span class="interaction-tag">📋 Dropdown — All / Male / Female</span>
-              <span class="interaction-tag">🖱 Hover — rate & count</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- VIZ 3: scatter_with_trend.html -->
-      <div class="viz-block fade-up">
-        <div class="viz-header">
-          <div class="viz-number">3</div>
-          <div class="viz-meta">
-            <div class="viz-type">Altair · Scatter Plot</div>
-            <div class="viz-title">Max Heart Rate vs ST Depression by Disease Status</div>
-            <div class="viz-goal">Goal: Explore the joint relationship between two clinical measurements and disease status.</div>
-          </div>
-        </div>
-        <div class="viz-instruction">
-          💡 <strong>How to use:</strong> Hover over any point to see detailed patient info including age, sex, max heart rate, and ST depression. Click and drag on the chart to brush-select a region — selected points stay colored while others fade to gray.
-        </div>
-        <div class="viz-iframe-area">
-          <iframe
-            src="scatter_with_trend.html"
-            title="Max Heart Rate vs ST Depression Scatter Plot"
-            scrolling="no"
-            style="border:none; width:100%; height:450px; display:block; border-radius:8px;">
-          </iframe>
-        </div>
-        <div class="viz-body">
-          <div class="viz-body-block">
-            <h4>Takeaway</h4>
-            <p>Disease cases cluster at higher ST depression values and lower maximum heart rates. Separate regression lines confirm the relationship between these variables differs by disease status — the disease group shows higher ST depression across the range of heart rates.</p>
-          </div>
-          <div class="viz-body-block">
-            <h4>Design Choices</h4>
-            <p>Partial transparency prevents overplotting on dense regions. Regression lines summarize each group's trend without hiding individual points. Brush selection enables focused exploration of specific clusters.</p>
-            <div style="margin-top:10px;">
-              <span class="interaction-tag">🖱 Hover — age, sex, max HR, ST depression</span>
-              <span class="interaction-tag">✏️ Drag to brush-select region</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- VIZ 4: box.html -->
-      <div class="viz-block fade-up">
-        <div class="viz-header">
-          <div class="viz-number">4</div>
-          <div class="viz-meta">
-            <div class="viz-type">Altair · Box Plot</div>
-            <div class="viz-title">Distribution of Clinical Variables by Disease Status</div>
-            <div class="viz-goal">Goal: Compare the spread and median of clinical variables across disease groups.</div>
-          </div>
-        </div>
-        <div class="viz-instruction">
-          💡 <strong>How to use:</strong> Use the Variable dropdown at the top of the chart to switch between Cholesterol, Max Heart Rate, and ST Depression. Hover over each box to see the median and quartile values for each group.
-        </div>
-        <div class="viz-iframe-area">
-            <iframe
-              src="box.html"
-              title="Distribution of Clinical Variables Box Plot"
-              scrolling="no"
-              style="border:none; width:100%; height:600px; display:block; border-radius:8px;">
-            </iframe>
-        </div>
-        <div class="viz-body">
-          <div class="viz-body-block">
-            <h4>Takeaway</h4>
-            <p>ST depression shows the clearest separation between groups with minimal overlap, making it a strong individual predictor. The disease group also tends to have lower maximum heart rates. Cholesterol distributions overlap heavily, suggesting it is a weaker standalone predictor.</p>
-          </div>
-          <div class="viz-body-block">
-            <h4>Design Choices</h4>
-            <p>A dropdown replaces three separate charts, keeping the layout clean while enabling direct comparison. Box size is standardized so visual weight stays consistent. Color matches the rest of the project for disease status.</p>
-            <div style="margin-top:10px;">
-              <span class="interaction-tag">📋 Dropdown — Cholesterol / Max HR / ST Depression</span>
-              <span class="interaction-tag">🖱 Hover — median & quartile values</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- VIZ 5: D3 Heatmap embedded directly -->
-      <div class="viz-block fade-up">
-        <div class="viz-header">
-          <div class="viz-number">5</div>
           <div class="viz-meta">
             <div class="viz-type">D3.js · Interactive Heatmap</div>
             <div class="viz-title">Heart Disease Rate by Sex and Chest Pain Type</div>
@@ -285,6 +174,117 @@
               <span class="interaction-tag">📋 Dropdown — All / &lt;50 / 50–60 / 60+</span>
               <span class="interaction-tag">🖱 Hover tooltip — sex, pain type, rate, count</span>
               <span class="interaction-tag">🔲 Click to highlight cell</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIZ 3: bar.html (was 2) -->
+      <div class="viz-block fade-up">
+        <div class="viz-header">
+          <div class="viz-number">3</div>
+          <div class="viz-meta">
+            <div class="viz-type">Altair · Bar Chart</div>
+            <div class="viz-title">Heart Disease Rate by Chest Pain Type</div>
+            <div class="viz-goal">Goal: Compare heart disease risk across chest pain categories, filterable by sex.</div>
+          </div>
+        </div>
+        <div class="viz-instruction">
+          💡 <strong>How to use:</strong> Use the Sex dropdown at the top of the chart to filter by All, male, or female. Hover over bars to see the exact disease rate and total count.
+        </div>
+        <div class="viz-iframe-area">
+          <iframe
+            src="bar.html"
+            title="Heart Disease Rate by Chest Pain Type"
+            scrolling="no"
+            style="border:none; width:100%; height:450px; display:block; border-radius:8px;">
+          </iframe>
+        </div>
+        <div class="viz-body">
+          <div class="viz-body-block">
+            <h4>Takeaway</h4>
+            <p>Asymptomatic chest pain has a strikingly higher heart disease rate — a counterintuitive but clinically significant finding. When filtering by sex, males show much higher rates across all pain types. Female patterns differ, suggesting the symptom-disease relationship varies by sex.</p>
+          </div>
+          <div class="viz-body-block">
+            <h4>Design Choices</h4>
+            <p>Disease rate rather than raw count is used on the y-axis for fair comparison across groups of different sizes. Bars are sorted highest to lowest. Color encodes chest pain type for quick visual differentiation.</p>
+            <div style="margin-top:10px;">
+              <span class="interaction-tag">📋 Dropdown — All / Male / Female</span>
+              <span class="interaction-tag">🖱 Hover — rate &amp; count</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIZ 4: scatter_with_trend.html (was 3) -->
+      <div class="viz-block fade-up">
+        <div class="viz-header">
+          <div class="viz-number">4</div>
+          <div class="viz-meta">
+            <div class="viz-type">Altair · Scatter Plot</div>
+            <div class="viz-title">Max Heart Rate vs ST Depression by Disease Status</div>
+            <div class="viz-goal">Goal: Explore the joint relationship between two clinical measurements and disease status.</div>
+          </div>
+        </div>
+        <div class="viz-instruction">
+          💡 <strong>How to use:</strong> Hover over any point to see detailed patient info including age, sex, max heart rate, and ST depression. Click and drag on the chart to brush-select a region — selected points stay colored while others fade to gray.
+        </div>
+        <div class="viz-iframe-area">
+          <iframe
+            src="scatter_with_trend.html"
+            title="Max Heart Rate vs ST Depression Scatter Plot"
+            scrolling="no"
+            style="border:none; width:100%; height:450px; display:block; border-radius:8px;">
+          </iframe>
+        </div>
+        <div class="viz-body">
+          <div class="viz-body-block">
+            <h4>Takeaway</h4>
+            <p>Disease cases cluster at higher ST depression values and lower maximum heart rates. Separate regression lines confirm the relationship between these variables differs by disease status — the disease group shows higher ST depression across the range of heart rates.</p>
+          </div>
+          <div class="viz-body-block">
+            <h4>Design Choices</h4>
+            <p>Partial transparency prevents overplotting on dense regions. Regression lines summarize each group's trend without hiding individual points. Brush selection enables focused exploration of specific clusters.</p>
+            <div style="margin-top:10px;">
+              <span class="interaction-tag">🖱 Hover — age, sex, max HR, ST depression</span>
+              <span class="interaction-tag">✏️ Drag to brush-select region</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIZ 5: box.html (was 4) -->
+      <div class="viz-block fade-up">
+        <div class="viz-header">
+          <div class="viz-number">5</div>
+          <div class="viz-meta">
+            <div class="viz-type">Altair · Box Plot</div>
+            <div class="viz-title">Distribution of Clinical Variables by Disease Status</div>
+            <div class="viz-goal">Goal: Compare the spread and median of clinical variables across disease groups.</div>
+          </div>
+        </div>
+        <div class="viz-instruction">
+          💡 <strong>How to use:</strong> Use the Variable dropdown at the top of the chart to switch between Cholesterol, Max Heart Rate, and ST Depression. Hover over each box to see the median and quartile values for each group.
+        </div>
+        <div class="viz-iframe-area">
+            <iframe
+              src="box.html"
+              title="Distribution of Clinical Variables Box Plot"
+              scrolling="no"
+              style="border:none; width:100%; height:600px; display:block; border-radius:8px;">
+            </iframe>
+        </div>
+        <div class="viz-body">
+          <div class="viz-body-block">
+            <h4>Takeaway</h4>
+            <p>ST depression shows the clearest separation between groups with minimal overlap, making it a strong individual predictor. The disease group also tends to have lower maximum heart rates. Cholesterol distributions overlap heavily, suggesting it is a weaker standalone predictor.</p>
+          </div>
+          <div class="viz-body-block">
+            <h4>Design Choices</h4>
+            <p>A dropdown replaces three separate charts, keeping the layout clean while enabling direct comparison. Box size is standardized so visual weight stays consistent. Color matches the rest of the project for disease status.</p>
+            <div style="margin-top:10px;">
+              <span class="interaction-tag">📋 Dropdown — Cholesterol / Max HR / ST Depression</span>
+              <span class="interaction-tag">🖱 Hover — median &amp; quartile values</span>
             </div>
           </div>
         </div>
@@ -340,9 +340,9 @@
 </section>
 
 <footer>
-  <p><strong>DS4200 — Information Presentation & Visualization</strong></p>
+  <p><strong>DS4200 — Information Presentation &amp; Visualization</strong></p>
   <p style="margin-top:8px;">Group 57 · Yi Ham Lin · Junxiang Peng · HaoTong Liu · Northeastern University</p>
-  <p style="margin-top:8px;">Dataset: Kaggle Heart Disease Dataset · Built with Altair & D3.js</p>
+  <p style="margin-top:8px;">Dataset: Kaggle Heart Disease Dataset · Built with Altair &amp; D3.js</p>
 </footer>
 
 <!-- Floating tooltip for D3 heatmap -->
